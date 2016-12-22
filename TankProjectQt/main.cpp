@@ -2,9 +2,6 @@
 #include "MyRect.h"
 #include <QGraphicsScene>
 #include <QGraphicsView>
-#include <QLabel>
-#include <QPicture>
-#include <QPainter>
 
 /*
 Tutorial Topics:
@@ -16,19 +13,32 @@ Tutorial Topics:
 int main(int argc, char *argv[]){
     QApplication a(argc, argv);
 
+    // create a scene
+    QGraphicsScene * scene = new QGraphicsScene();
 
-    QLabel l; //affichage de texte ou d'image
-       QPicture pi;    //afficher sur le conteneurs
-       QPainter p(&pi);//conteneur
-     // p.setWindow(50, 100, 200,200 );
-       p.setPen(QPen(Qt::blue, 1)); //police(couleur et taille)
+    // create an item to add to the scene
+    MyRect * rect = new MyRect();
+    rect->setRect(0,0,50,50); // change the rect from 0x0 (default) to 100x100 pixels
 
-   //p.drawLine(50, 100,200, 200);
+    // add the item to the scene
+    scene->addItem(rect);
 
-       p.end(); // Don't forget this line! -> destructeur de p, renvoie true si desactiver
+    // make rect focusable
+    rect->setFlag(QGraphicsItem::ItemIsFocusable);
+    rect->setFocus();
 
-          l.setPicture(pi); //definit le contenu de l'etiquette a l'image(le precedent est effacer)
-          l.show();        //afficher l
+    // create a view to visualize the scene
+    QGraphicsView * view = new QGraphicsView(scene);
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    // show the view
+    view->show();
+
+    //==new code==
+view->setFixedSize(800,600);
+scene->setSceneRect(0,0,800,600);
+
 
 
     return a.exec();
